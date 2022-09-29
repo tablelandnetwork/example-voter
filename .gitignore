@@ -1,0 +1,22 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# IDEs
+.idea/
+.vscode/
+
+# Project
+node_modules
+.env
+coverage
+coverage.json
+typechain-types
+cache
+artifacts
+*.ignore
+build
+dist
