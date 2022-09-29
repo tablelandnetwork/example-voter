@@ -23,7 +23,7 @@ contract TablelandVoter is ITablelandController {
     uint256 private _answersTableId;
     string private constant ANSWERS_PREFIX = "voter_answers";
     string private constant ANSWERS_SCHEMA =
-        "qid int, token text, respondent text, body text";
+        "qid int, token text, respondent text, vote int, unique(qid, respondent)";
 
     bytes4 private constant IID_IERC721 = 0x80ac58cd;
 
@@ -54,9 +54,12 @@ contract TablelandVoter is ITablelandController {
     function answer(
         uint256 qid,
         address token,
-        string memory body
+        bool vote
     ) external {
-        require(token.supportsInterface(0x80ac58cd), "token is not an nft");
+        require(
+            token.supportsInterface(type(IERC721).interfaceId),
+            "token is not an nft"
+        );
         require(
             IERC721(token).balanceOf(msg.sender) > 0,
             "sender is not token owner"
@@ -69,7 +72,7 @@ contract TablelandVoter is ITablelandController {
             SQLHelpers.toInsert(
                 ANSWERS_PREFIX,
                 _answersTableId,
-                "qid,token,respondent,body",
+                "qid,token,respondent,vote",
                 string.concat(
                     Strings.toString(qid),
                     ",",
@@ -77,7 +80,7 @@ contract TablelandVoter is ITablelandController {
                     ",",
                     SQLHelpers.quote(Strings.toHexString(msg.sender)),
                     ",",
-                    SQLHelpers.quote(body)
+                    vote ? "1" : "0"
                 )
             )
         );
