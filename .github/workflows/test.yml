@@ -14,9 +14,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./evm
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
