@@ -1,7 +1,7 @@
 {
   "name": "example-voter",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple voting mechanism built with Tableland",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -26,7 +26,7 @@
     "access": "public"
   },
   "bin": {
-    "voter": "./dist/cli.js"
+    "voter": "./dist/src/cli.js"
   },
   "pkg": {
     "scripts": "./dist/**/*.js"
