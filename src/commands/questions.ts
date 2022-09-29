@@ -61,9 +61,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     const answersTable = await voter.getAnswersTable()
     const conditions: string[] = []
     for (let i = 0; i < tokens.ownedNfts.length; i++) {
-      conditions.push(
-        `lower('${tokens.ownedNfts[i].contract.address}')`
-      )
+      conditions.push(`lower('${tokens.ownedNfts[i].contract.address}')`)
     }
     const query = `select ${questionsTable}.body as question, count(${answersTable}.respondent) as votes, sum(${answersTable}.vote) as yes 
       from ${questionsTable} 

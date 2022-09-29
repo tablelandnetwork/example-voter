@@ -15,7 +15,7 @@ export interface VoterDeployments {
 
 export const deployments: VoterDeployments = {
   "optimism-goerli": {
-    contractAddress: "0x8fBBd47Dd357d687750Cf7E5754cA9842f2C51CD",
+    contractAddress: "0x0665B0Ee94880d5E2b2368912311E48517D5Bdd8",
     tablelandHost: "https://testnet.tableland.network",
   },
   "polygon-mumbai": {
