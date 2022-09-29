@@ -14,7 +14,7 @@ import {
   deployments,
   VoterDeployment,
   VoterDeployments,
-} from "./dist/deployments"
+} from "./deployments"
 
 dotenv.config()
 

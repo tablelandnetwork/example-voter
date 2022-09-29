@@ -57,7 +57,8 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
       join ${questionsTable} 
       on ${questionsTable}.id = ${answersTable}.qid 
       and lower(${questionsTable}.token) = lower(${answersTable}.token) 
-      and lower(${answersTable}.respondent)=lower('${signer.address}')`
+      and lower(${answersTable}.respondent)=lower('${signer.address}')
+      group by qid`
     const result = resultsToObjects(await connect(options).read(query))
     if (result.length === 0) {
       console.error(`no answers yet\n`)

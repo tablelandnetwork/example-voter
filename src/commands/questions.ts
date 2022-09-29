@@ -65,10 +65,11 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     }
     const query = `select ${questionsTable}.body as question, count(${answersTable}.respondent) as votes, sum(${answersTable}.vote) as yes 
       from ${questionsTable} 
-      join ${answersTable} 
+      left join ${answersTable} 
       on ${questionsTable}.id = ${answersTable}.qid 
       and lower(${questionsTable}.token) = lower(${answersTable}.token) 
-      and lower(${questionsTable}.token) in (${conditions.join(",")})`
+      and lower(${questionsTable}.token) in (${conditions.join(",")})
+      group by id`
     const result = resultsToObjects(await connect(options).read(query))
     if (result.length === 0) {
       console.error(`no questions yet\n`)
