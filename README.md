@@ -25,6 +25,8 @@
 
 # Usage
 
+`example-voter` is deployed to Optimism Goerli. Grab some [Goerli](https://goerlifaucet.com/), bridge to [Optimism](https://app.optimism.io/bridge/deposit), and start asking questions :)
+
 ```bash
 > voter --help
 
