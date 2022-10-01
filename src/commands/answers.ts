@@ -21,7 +21,7 @@ type Options = {
 }
 
 export const command = "answers"
-export const desc = "List your answers"
+export const desc = "List answers you have given."
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs as yargs.Argv<Options>

@@ -17,7 +17,7 @@ type Options = {
 }
 
 export const command = "ask <token> <question>"
-export const desc = "Author a new question"
+export const desc = "Ask holders of an ERC721 collection a question."
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
