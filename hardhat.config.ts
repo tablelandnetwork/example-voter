@@ -10,11 +10,7 @@ import "hardhat-dependency-compiler"
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer"
 import "solidity-coverage"
-import {
-  deployments,
-  VoterDeployment,
-  VoterDeployments,
-} from "./deployments"
+import { deployments, VoterDeployment, VoterDeployments } from "./deployments"
 
 dotenv.config()
 

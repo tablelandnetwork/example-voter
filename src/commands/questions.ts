@@ -21,7 +21,7 @@ type Options = {
 }
 
 export const command = "questions"
-export const desc = "List your questions"
+export const desc = "List questions you can answer based on NFT holdings."
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs as yargs.Argv<Options>
