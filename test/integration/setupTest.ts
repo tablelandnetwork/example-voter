@@ -1,14 +1,15 @@
-import test, { Test } from "tape"
-import fetch from "node-fetch"
-import { LocalTableland } from "@tableland/local/bin/cjs/main.js"
+//const test = require("tape");
+const { Test } = require("tape");
+const nodeFetch = require("node-fetch")
+const { LocalTableland } = require("@tableland/local/bin/cjs/main.js");
 
 // @ts-ignore
-globalThis.fetch = fetch
+globalThis.fetch = nodeFetch
 
 let initializing: Promise<void> | undefined
 let ready = false
-let localNetwork: LocalTableland | undefined
-export const setup = function (t: Test) {
+let localNetwork: typeof LocalTableland | undefined
+module.exports = function (t: typeof Test) {
   // if the local network is running the caller can proceed, but we
   // wait so that tests for hit the request rate limit on the validator
   if (ready) return new Promise((resolve) => setTimeout(() => resolve(0), 2500))
@@ -35,7 +36,7 @@ export const setup = function (t: Test) {
 }
 
 // TODO: handle starting the local node in setup for all tests
-test.onFinish(async function () {
+Test.onFinish(async function () {
   console.log("onFinish")
   if (!localNetwork) return
   console.log("shutting down")

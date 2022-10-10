@@ -1,4 +1,4 @@
-import test from "tape"
+const test = require("tape");
 // import { ethers } from "ethers"
 // import { setup } from "./setupTest.js"
 // import { getAccounts } from "@tableland/local/bin/cjs/main.js"
