@@ -33,40 +33,49 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { token, question, privateKey, chain, providerUrl } = argv
 
-  const deployment = deployments[chain]
-  if (!deployment) {
-    console.error(`chain ${chain} is not supported\n`)
-    process.exit(1)
-  }
-
   try {
-    const signer = getWalletWithProvider({
-      privateKey,
-      chain,
-      providerUrl,
-    })
-    const options: ConnectOptions = {
-      chain,
-      rpcRelay: false,
-      signer,
-    }
-    const voter = TablelandVoter__factory.connect(
-      deployment.contractAddress,
-      signer
-    ) as TablelandVoter
-
-    // Insert new question
-    const questionsTable = await voter.getQuestionsTable()
-    const insert = `insert into ${questionsTable}(token,body) values('${token}','${question}')`
-    const res = await connect(options).write(insert)
-
-    // Show transaction info
-    const link = getLink(chain, res.hash)
-    const out = JSON.stringify({ ...res, link }, null, 2)
+    const out = ask(token, question, privateKey, chain, providerUrl)
     console.log(out)
     process.exit(0)
   } catch (err: any) {
     console.error(err.message)
     process.exit(1)
   }
+}
+
+export const ask = async (
+  token: string,
+  question: string,
+  privateKey: string,
+  chain: ChainName,
+  providerUrl: string
+): Promise<string> => {
+  const deployment = deployments[chain]
+  if (!deployment) {
+    throw new Error("unsupported chain (see `chains` command for details)")
+  }
+
+  const signer = getWalletWithProvider({
+    privateKey,
+    chain,
+    providerUrl,
+  })
+  const options: ConnectOptions = {
+    chain,
+    rpcRelay: false,
+    signer,
+  }
+  const voter = TablelandVoter__factory.connect(
+    deployment.contractAddress,
+    signer
+  ) as TablelandVoter
+
+  // Insert new question
+  const questionsTable = await voter.getQuestionsTable()
+  const insert = `insert into ${questionsTable}(token,body) values('${token}','${question}')`
+  const res = await connect(options).write(insert)
+
+  // Show transaction info
+  const link = getLink(chain, res.hash)
+  return JSON.stringify({ ...res, link }, null, 2)
 }
