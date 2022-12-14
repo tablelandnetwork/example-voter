@@ -4,7 +4,6 @@ import { HardhatUserConfig, extendEnvironment } from "hardhat/config"
 import { HardhatRuntimeEnvironment } from "hardhat/types"
 import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
-import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import "hardhat-dependency-compiler"
 import "hardhat-gas-reporter"
@@ -54,6 +53,9 @@ const config: HardhatUserConfig = {
       url: process.env.PROVIDER_URL ?? "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    "local-tableland": {
+      url: "http://127.0.0.1:8545",
     },
     // devnets
     hardhat: {

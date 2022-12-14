@@ -22,8 +22,9 @@ export const deployments: VoterDeployments = {
     contractAddress: "",
     tablelandHost: "https://testnet.tableland.network",
   },
-  localhost: {
-    contractAddress: "",
+  "local-tableland": {
+    // this is the address assuming you deploy on a fresh local-tableland instance
+    contractAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     tablelandHost: "http://localhost:8080",
   },
 }

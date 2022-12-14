@@ -51,11 +51,7 @@ contract TablelandVoter is ITablelandController {
     // Create an answer.
     // Here we let the contract do inserts into the answers table.
     // The sender must be a holder of token to answer for related questions.
-    function answer(
-        uint256 qid,
-        address token,
-        bool vote
-    ) external {
+    function answer(uint256 qid, address token, bool vote) external {
         require(
             token.supportsInterface(type(IERC721).interfaceId),
             "token is not an nft"

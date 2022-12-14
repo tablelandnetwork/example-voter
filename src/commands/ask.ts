@@ -1,7 +1,7 @@
 import type yargs from "yargs"
 import type { Arguments, CommandBuilder } from "yargs"
 import { connect, ConnectOptions, ChainName } from "@tableland/sdk"
-import { getWalletWithProvider, getLink } from "../utils.js"
+import { getWalletWithProvider, getLink } from "../utils"
 import { TablelandVoter, TablelandVoter__factory } from "../../typechain-types"
 import { deployments } from "../../deployments"
 
@@ -34,7 +34,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { token, question, privateKey, chain, providerUrl } = argv
 
   try {
-    const out = ask(token, question, privateKey, chain, providerUrl)
+    const out = await ask(token, question, privateKey, chain, providerUrl)
     console.log(out)
     process.exit(0)
   } catch (err: any) {
@@ -72,7 +72,9 @@ export const ask = async (
 
   // Insert new question
   const questionsTable = await voter.getQuestionsTable()
+  console.log(questionsTable)
   const insert = `insert into ${questionsTable}(token,body) values('${token}','${question}')`
+  console.log(insert)
   const res = await connect(options).write(insert)
 
   // Show transaction info

@@ -1,6 +1,6 @@
 import { Wallet, providers, getDefaultProvider } from "ethers"
 import { ChainName } from "@tableland/sdk"
-import getChains from "./chains.js"
+import getChains from "./chains"
 import { Network, Alchemy, OwnedBaseNftsResponse } from "alchemy-sdk"
 
 export interface Options {
@@ -8,6 +8,9 @@ export interface Options {
   chain: ChainName
   providerUrl: string | undefined
 }
+
+// This is always the token address if deploying on a fresh local-tableland instance.
+export const exampleTokenAddress = "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707"
 
 export function getLink(chain: ChainName, hash: string): string {
   if (!hash) {
@@ -82,14 +85,7 @@ export function getSignerOnly({
     throw new Error("unsupported chain (see `chains` command for details)")
   }
 
-  // FIXME: This is a hack due to a regression in js-tableland
-  // See: https://github.com/tablelandnetwork/js-tableland/issues/22
-  const signer = new Wallet(privateKey, {
-    getNetwork: async () => {
-      return network
-    },
-    _isProvider: true,
-  } as providers.Provider)
+  const signer = new Wallet(privateKey)
   return signer
 }
 
@@ -107,10 +103,10 @@ export function getWalletWithProvider({
   }
 
   const wallet = new Wallet(privateKey)
-  let provider: providers.BaseProvider = new providers.JsonRpcProvider(
-    chain === "local-tableland" ? undefined : providerUrl, // Defaults to localhost
-    network.name
-  )
+  let provider: providers.BaseProvider =
+    chain === "local-tableland"
+      ? getDefaultProvider("http://127.0.0.1:8545")
+      : new providers.JsonRpcProvider(providerUrl, network.name)
   if (!provider) {
     // This will be significantly rate limited, but we only need to run it once
     provider = getDefaultProvider(network)
