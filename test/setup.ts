@@ -11,7 +11,6 @@ const lt = new LocalTableland({ silent: true })
 const accounts = getAccounts()
 
 before(async function () {
-  console.log("setup before")
   this.timeout(25000)
   lt.start()
   await lt.isReady()

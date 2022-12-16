@@ -1,4 +1,5 @@
 import { Wallet, providers, getDefaultProvider } from "ethers"
+import { ethers } from "hardhat"
 import { ChainName } from "@tableland/sdk"
 import getChains from "./chains"
 import { Network, Alchemy, OwnedBaseNftsResponse } from "alchemy-sdk"
@@ -45,6 +46,18 @@ export async function getNftsForOwner(
   chain: ChainName,
   providerUrl: string
 ): Promise<OwnedBaseNftsResponse> {
+  if (chain !== "local-tableland") {
+    return await getNftsForOwnerAlchemy(wallet, chain, providerUrl)
+  }
+
+  return await getNftsForOwnerExample(wallet, chain, providerUrl)
+}
+
+const getNftsForOwnerAlchemy = async function (
+  wallet: Wallet,
+  chain: ChainName,
+  providerUrl: string
+): Promise<OwnedBaseNftsResponse> {
   const parts = providerUrl.split("/")
   const key = parts[parts.length - 1]
 
@@ -68,6 +81,42 @@ export async function getNftsForOwner(
   return await alchemy.nft.getNftsForOwner(wallet.address, {
     omitMetadata: true,
   })
+}
+
+// For tests we can't use Alchemy's private index of NFTs per chain, so we are
+// basically mocking that by only getting the `ExampleToken`s owned by the Wallet
+const getNftsForOwnerExample = async function (
+  wallet: Wallet,
+  chain: ChainName,
+  providerUrl: string
+): Promise<OwnedBaseNftsResponse> {
+  const exampleToken = await ethers.getContractAt(
+    "ExampleToken",
+    exampleTokenAddress
+  )
+
+  const tokenCount = await exampleToken.balanceOf(wallet.address)
+  const tokens: {
+    ownedNfts: any[]
+    totalCount: number
+  } = {
+    ownedNfts: [],
+    totalCount: 0,
+  }
+
+  for (let i = 0; i < tokenCount.toNumber(); i++) {
+    const tokenId = await exampleToken.tokenOfOwnerByIndex(wallet.address, i)
+    tokens.ownedNfts.push({
+      contract: {
+        address: exampleTokenAddress,
+      },
+      tokenId,
+    })
+  }
+
+  tokens.totalCount = tokens.ownedNfts.length
+
+  return tokens
 }
 
 export function getSignerOnly({
