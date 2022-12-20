@@ -2,6 +2,19 @@
   "name": "example-voter",
   "version": "0.0.1",
   "description": "A simple voting mechanism built with Tableland",
+  "homepage": "https://github.com/tablelandnetwork/example-voter#readme",
+  "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tablelandnetwork/example-voter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tablelandnetwork/example-voter/issues"
+  },
+  "keywords": [
+    "tableland",
+    "voting"
+  ],
   "engines": {
     "node": ">=14.0.0"
   },
@@ -9,12 +22,15 @@
   "files": [
     "dist/**/*.js"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "hardhat compile && npx tsc -p ./tsconfig.build.json && chmod +x dist/src/cli.js",
+    "build:test": "npm run build && tsc -p tsconfig.e2e.json",
     "package": "pkg . --targets node18-macos-x64 --output voter",
     "clean": "hardhat clean && rm -rf artifacts && rm -rf typechain-types && rm -rf cache && rm -rf coverage && rm -f coverage.json && rm -rf dist",
-    "up": "npm install && hardhat compile && npm run build && hardhat node",
-    "test": "hardhat coverage && istanbul check-coverage ./coverage.json --statements 100 --branches 95 --functions 100 --lines 100",
+    "test": "npx hardhat --network localhost test",
     "lint": "eslint '**/*.{js,ts}'",
     "lint:fix": "npm run lint -- --fix",
     "prettier": "prettier '**/*.{ts,json,sol,md}' --check",
@@ -22,33 +38,17 @@
     "format": "npm run prettier:fix && npm run lint:fix",
     "prepublishOnly": "npm run build"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "bin": {
     "voter": "./dist/src/cli.js"
   },
   "pkg": {
     "scripts": "./dist/**/*.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tablelandnetwork/example-voter.git"
-  },
-  "keywords": [
-    "tableland",
-    "voting"
-  ],
-  "license": "Unlicense",
-  "bugs": {
-    "url": "https://github.com/tablelandnetwork/example-voter/issues"
-  },
-  "homepage": "https://github.com/tablelandnetwork/example-voter#readme",
   "dependencies": {
-    "@tableland/sdk": "^3.1.2",
-    "alchemy-sdk": "^2.0.5-rc1",
+    "@tableland/sdk": "^3.1.5",
+    "alchemy-sdk": "^2.1.1",
     "cosmiconfig": "^7.0.1",
-    "dotenv": "^16.0.2",
+    "dotenv": "^16.0.3",
     "ethers": "^5.7.1",
     "inquirer": "^8.0.0",
     "js-yaml": "^4.1.0",
@@ -59,19 +59,19 @@
     "@ethersproject/providers": "^5.6.8",
     "@nomiclabs/hardhat-ethers": "^2.1.0",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.7.3",
-    "@openzeppelin/contracts-upgradeable": "^4.7.3",
-    "@tableland/evm": "^2.1.0",
+    "@openzeppelin/contracts-upgradeable": "^4.8.0",
+    "@tableland/evm": "^3.0.3",
+    "@tableland/local": "^0.0.4",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.1",
     "@types/chai-as-promised": "^7.1.5",
     "@types/inquirer": "^9.0.1",
     "@types/js-yaml": "^4.0.5",
-    "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.18",
     "@types/node-fetch": "^2.6.2",
+    "@types/tape": "^4.13.2",
     "@types/yargs": "^17.0.12",
     "@typescript-eslint/eslint-plugin": "5.38",
     "@typescript-eslint/parser": "5.38",
@@ -86,16 +86,19 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
-    "ethereum-waffle": "^3.4.4",
-    "hardhat": "^2.10.0",
+    "ganache-cli": "^6.12.2",
+    "hardhat": "^2.11.2",
     "hardhat-contract-sizer": "^2.6.1",
     "hardhat-dependency-compiler": "^1.1.3",
     "hardhat-gas-reporter": "^1.0.8",
+    "mocha": "^10.2.0",
+    "mock-stdin": "^1.0.0",
     "pkg": "^5.7.0",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7",
     "solidity-coverage": "^0.8.0-beta.1",
+    "tape": "^5.6.1",
     "ts-node": "^10.8.2",
     "typechain": "^8.1.0",
     "typescript": "^4.8.3"

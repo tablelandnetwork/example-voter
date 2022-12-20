@@ -1,0 +1,25 @@
+// {
+//   "compilerOptions": {
+//     "target": "es2018",
+//     "lib": ["es2021"],
+//     "module": "commonjs",
+//     "strict": true,
+//     "outDir": "test/integration/build",
+//     "declaration": true,
+//     "sourceMap": true,
+//     "declarationMap": true,
+//     "esModuleInterop": true,
+//     "moduleResolution": "node",
+//   },
+//   "include": ["test/integration/*.ts"]
+// }
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "test/integration/build",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
+  },
+  "include": ["./src/**/*", "./typechain-types/**/*", "test/integration/*.ts"]
+}
