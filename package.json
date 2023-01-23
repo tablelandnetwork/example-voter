@@ -74,7 +74,7 @@
     "@types/tape": "^4.13.2",
     "@types/yargs": "^17.0.12",
     "@typescript-eslint/eslint-plugin": "5.38",
-    "@typescript-eslint/parser": "5.38",
+    "@typescript-eslint/parser": "5.49",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
     "dotenv": "^16.0.1",
